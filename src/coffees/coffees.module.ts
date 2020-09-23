@@ -2,6 +2,8 @@ import { Module, Injectable } from '@nestjs/common';
 import { CoffeesController } from './coffees.controller';
 import { CoffeesService } from './coffees.service';
 import { COFFEE_BRANDS } from './coffees.constants';
+/* Utilize ConfigService */
+import { ConfigModule } from '@nestjs/config';
 
 class ConfigService {}
 class DevelopmentConfigService {}
@@ -16,6 +18,7 @@ export class CoffeeBrandsFactory {
 }
 
 @Module({
+    imports: [ConfigModule],
     controllers: [CoffeesController],
     providers: [CoffeesService, CoffeeBrandsFactory, 
         {

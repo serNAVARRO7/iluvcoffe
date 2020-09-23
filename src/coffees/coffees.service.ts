@@ -1,6 +1,8 @@
 import { Injectable, NotFoundException, Inject } from '@nestjs/common';
 import { Coffee } from './entities/coffee.entity';
 import { COFFEE_BRANDS } from './coffees.constants';
+/* Utilize ConfigService for reading configuration variables (.env) */
+import { ConfigService } from '@nestjs/config';
 
 
 // -------------
@@ -54,8 +56,13 @@ export class CoffeesService {
     },
   ];
 
-  constructor(@Inject(COFFEE_BRANDS) coffeeBrands: string[]) {
+  constructor(@Inject(COFFEE_BRANDS) coffeeBrands: string[],
+             private readonly configService: ConfigService) 
+             {
     console.log(coffeeBrands);
+    /* Accessing process.env variables from ConfigService */
+    const databaseHost = this.configService.get<string>('DATABASE_HOST');
+    console.log(databaseHost);
   }
 
   findAll() {
