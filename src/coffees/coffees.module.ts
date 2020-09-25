@@ -4,6 +4,9 @@ import { CoffeesService } from './coffees.service';
 import { COFFEE_BRANDS } from './coffees.constants';
 /* Utilize ConfigService */
 import { ConfigModule } from '@nestjs/config';
+import { MongooseModule } from '@nestjs/mongoose';
+import { Coffee, CoffeeSchema } from './entities/coffee.entity';
+import { Event, EventSchema } from 'src/events/entities/event.entity';
 
 class ConfigService {}
 class DevelopmentConfigService {}
@@ -18,7 +21,17 @@ export class CoffeeBrandsFactory {
 }
 
 @Module({
-    imports: [ConfigModule],
+    imports: [
+        ConfigModule,
+        MongooseModule.forFeature([{ 
+          name: Coffee.name, 
+          schema: CoffeeSchema 
+        },
+        {
+            name: Event.name, 
+            schema: EventSchema }
+        ])
+    ],
     controllers: [CoffeesController],
     providers: [CoffeesService, CoffeeBrandsFactory, 
         {
@@ -27,6 +40,7 @@ export class CoffeeBrandsFactory {
             brandsFactory.create(), 
             inject: [CoffeeBrandsFactory],
         }
+        
         //{
             // provide: ConfigService,
             // useClass:
